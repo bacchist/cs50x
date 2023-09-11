@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<h1>AI Prompt</h1>
+<p>Wait a bit after submitting. It can take a while to generate a response.</p>
+    <form action="/chat" method="post">
+      <div class="mx-auto w-4/5">
+        <textarea class="textarea textarea-bordered textarea-md w-full" name="user_prompt"></textarea>
+        <br>
+        <button class="btn btn-neutral btn-block" type="submit">ask</button>
+      </div>
+    </form>
+{% endblock %}
+

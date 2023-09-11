@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  CS50 Final Project
+{% endblock %}
+
+{% block main %}
+<p>Press play to listen</p>
+<audio controls>
+  <source src="data:audio/mpeg;base64,{{ tts_audio }}">
+</audio>
+{{ response }}
+<a href="cs50x">Ask another question</a>
+{% endblock %}
+

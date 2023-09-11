@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+        <link href="/static/classes.css" rel="stylesheet">
+        <title>CS50 Final Project</title>
+    </head>
+    <body class="max-h-screen flex flex-col prose mx-auto">
+      <header class="mx-auto mt-4">
+        <div class="text-4xl font-bold mb-7">
+          <a class="no-underline" href="cs50x">CS50x Final Project</a>
+        </div>
+      </header>
+      <main class="grow mx-auto">
+        <div class="rounded border-solid border-2 border-slate-500 p-3 min-w-fit mx-2">
+          {% block main %}{% endblock %}
+        </div>
+      </main>
+      <footer class="pt-5 absolute inset-x-0 bottom-0">
+        <p class="text-center">Copyright © 2023 - Marshall Scott</p>
+      </footer>
+    </body>
+</html>
+
