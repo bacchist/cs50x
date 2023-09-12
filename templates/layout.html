@@ -6,6 +6,12 @@
         <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
         <link href="/static/classes.css" rel="stylesheet">
         <title>CS50 Final Project</title>
+        <script>
+          function showLoading() {
+            document.getElementById("submit").hidden = true;
+            document.getElementById("loading").hidden = false;
+          }
+        </script>
     </head>
     <body class="max-h-screen flex flex-col prose mx-auto">
       <header class="mx-auto mt-4">
@@ -18,7 +24,7 @@
           {% block main %}{% endblock %}
         </div>
       </main>
-      <footer class="pt-5 absolute inset-x-0 bottom-0">
+      <footer class="pt-5 static inset-x-0 bottom-0">
         <p class="text-center">Copyright © 2023 - Marshall Scott</p>
       </footer>
     </body>

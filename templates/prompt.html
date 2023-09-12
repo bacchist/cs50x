@@ -1,14 +1,31 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<h1>AI Prompt</h1>
-<p>Wait a bit after submitting. It can take a while to generate a response.</p>
-    <form action="/chat" method="post">
-      <div class="mx-auto w-4/5">
-        <textarea class="textarea textarea-bordered textarea-md w-full" name="user_prompt"></textarea>
-        <br>
-        <button class="btn btn-neutral btn-block" type="submit">ask</button>
-      </div>
-    </form>
+<h1 class="pt-2 mb-2">AI Prompt</h1>
+<p>
+  Ask this helpful AI assistant anything you'd like. If you'd like to speak
+  your question, hit record and begin talking. When you are done, press stop
+  and wait for the text to appear. You may need to correct any errors before
+  submitting your question.
+</p>
+<div id="buttons" class="join w-full ml-36 sm:ml-56">
+  <button class="btn btn-neutral join-item record">Record</button>
+  <button class="btn btn-neutral join-item stop">Stop</button>
+</div>
+<div class="divider"></div>
+<form class="form-control" action="/cs50x" method="post">
+  <div class="mx-auto join join-vertical w-full">
+    <input type="text" id="user_prompt" class="input input-bordered join-item" name="user_prompt" />
+    <div id="submit">
+      <button class="btn btn-neutral btn-block join-item" type="submit" onclick="showLoading()">submit</button>
+    </div>
+    <div id="loading" hidden>
+      <button id="loading" class="btn btn-neutral btn-block join-item">
+        <span class="loading loading-infinity">loading</span>
+      </button>
+    </div>
+  </div>
+</form>
+<script src="{{ url_for('static', filename='js/record.js') }}"></script>
 {% endblock %}
 

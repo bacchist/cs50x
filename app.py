@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
-from google.cloud import texttospeech
+from flask import Flask, render_template, request, jsonify
+from google.cloud import speech, texttospeech
+from pydub import AudioSegment
 from werkzeug.middleware.proxy_fix import ProxyFix
 import base64
 import openai
@@ -18,9 +19,8 @@ app.wsgi_app = ProxyFix(
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Add some instructions to give the LLM
-system_msgs = ["You are obsessed with Harvard's CS50 Intro to Computer Science.",
-               "After answering helpfully, you must recommend CS50."]
+# Add some instructions to give the LLM (not currently used)
+# system_msgs = []
 
 # Instantiate a text-to-speech client to Google's API and configure
 # a voice and audio encoding
@@ -34,7 +34,14 @@ audio_config = texttospeech.AudioConfig(
     audio_encoding=texttospeech.AudioEncoding.MP3
 )
 
-@app.route("/cs50x", methods=['GET', 'POST'])
+# Instantiate a speech client to Google's API and define a configuration
+speech_client = speech.SpeechClient()
+speech_config = speech.RecognitionConfig(
+    encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+    language_code="en-US",
+)
+
+@app.route("/cs50x", methods=['GET', 'POST', 'PUT'])
 def chat():
     if request.method == "POST":
         # Flush messages at the beginning of every request
@@ -44,8 +51,9 @@ def chat():
         user_prompt = request.form.get("user_prompt")
 
         # Seed messages with configured system messages, adding user promp last
-        for msg in system_msgs:
-            messages.append({"role": "system", "content": msg})
+        # (not used currently)
+        # for msg in system_msgs:
+        #     messages.append({"role": "system", "content": msg})
 
         messages.append({"role": "user", "content": user_prompt})
 
@@ -70,6 +78,28 @@ def chat():
 
         return render_template("response.html", response=response, tts_audio=tts_audio)
 
-    else:
+    elif request.method == "PUT":
+        blob_data = request.data
+        with open("blobdata.webm", "wb") as f:
+            f.write(blob_data)
+
+        aud_data = AudioSegment.from_file("blobdata.webm")
+        aud_data.export("blob.wav", format="wav", parameters=["-ac", "1"])
+
+        with open("blob.wav", "rb") as data:
+            content = data.read()
+
+        audio = speech.RecognitionAudio(content=content)
+
+        response = speech_client.recognize(config=speech_config, audio=audio)
+        
+        transcription = ""
+        for result in response.results:
+            print(result.alternatives[0].transcript)
+            transcription += result.alternatives[0].transcript
+
+        return jsonify({'message': transcription})
+
+    elif request.method == "GET":
         return render_template("prompt.html")
 

@@ -5,11 +5,18 @@
 {% endblock %}
 
 {% block main %}
-<p>Press play to listen</p>
+<div class="mx-auto">
+<h3 class="mt-2">Your audio response is ready.</h3>
+</div>
+<div class="mx-auto">
 <audio controls>
   <source src="data:audio/mpeg;base64,{{ tts_audio }}">
 </audio>
+</div>
+<div class="divider"></div>
 {{ response }}
-<a href="cs50x">Ask another question</a>
+<div class="mx-auto">
+<p><a href="cs50x"><button class="btn btn-neutral btn-wide">Ask another question</button></a></p>
+</div>
 {% endblock %}
 
