@@ -1,6 +1,6 @@
 # AI Prompt
 ### CS50x Final Project
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/3q2QYp8aQoc
 #### Description:
 
 It allows the user to prompt an AI assistant with a recorded voice clip and receive a response in both audio and text. To accomplish this, I used three different APIs. To convert the voice clip to text, I used Google Cloud's Speech-to-Text API. The resulting transcription is used in a request to OpenAI's ChatCompletions API, using the gpt-3.5-turbo language model. And finally the generated text is sent to Google Cloud's Text-to-Speech API to provide the audio response.
