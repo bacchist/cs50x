@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
 from google.cloud import speech, texttospeech
-from pydub import AudioSegment
 from werkzeug.middleware.proxy_fix import ProxyFix
 import base64
 import openai
@@ -37,7 +36,8 @@ audio_config = texttospeech.AudioConfig(
 # Instantiate a speech client to Google's API and define a configuration
 speech_client = speech.SpeechClient()
 speech_config = speech.RecognitionConfig(
-    encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+    encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
+    sample_rate_hertz=48000,
     language_code="en-US",
 )
 
@@ -80,16 +80,8 @@ def chat():
 
     elif request.method == "PUT":
         blob_data = request.data
-        with open("blobdata.webm", "wb") as f:
-            f.write(blob_data)
 
-        aud_data = AudioSegment.from_file("blobdata.webm")
-        aud_data.export("blob.wav", format="wav", parameters=["-ac", "1"])
-
-        with open("blob.wav", "rb") as data:
-            content = data.read()
-
-        audio = speech.RecognitionAudio(content=content)
+        audio = speech.RecognitionAudio(content=blob_data)
 
         response = speech_client.recognize(config=speech_config, audio=audio)
         
