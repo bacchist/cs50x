@@ -81,8 +81,8 @@ def chat():
     elif request.method == "PUT":
         blob_data = request.data
 
+        # Request Speech transcription from Google
         audio = speech.RecognitionAudio(content=blob_data)
-
         response = speech_client.recognize(config=speech_config, audio=audio)
         
         transcription = ""

@@ -1,3 +1,10 @@
+// This is a modified version of Web Dictaphone, a sample webapp provided by
+// MDN to demonstrate the MediaRecorder API. I repurposed it by removing the
+// visualization elements and the clip storage features. Aside from that, I
+// added one small bit of code specific to my application that passes the
+// blob containing the recorded audio to the server and uses the response to
+// populate the input field of the page.
+
 // set up basic variables for app
 
 const record = document.querySelector('.record');
@@ -51,7 +58,7 @@ if (navigator.mediaDevices.getUserMedia) {
 			chunks = [];
 			const audioURL = window.URL.createObjectURL(blob);
 
-
+			// Send the blob to the server and put the response in the user_prompt field
 			fetch('/cs50x', {
 				method: 'PUT',
 				body: blob
